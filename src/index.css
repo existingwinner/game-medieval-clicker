@@ -1,29 +1,201 @@
-@import url('https://fonts.googleapis.com/css2?family=Tiny5&display=swap');
 @import "tailwindcss";
+
+* {
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+@media (min-width: 400px) {
+  html {
+    font-size: 17px;
+  }
+}
+
+@media (min-width: 600px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+html, body, #root {
+  height: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: #191520;
+}
 
 body {
   margin: 0;
   padding: 0;
-  background-color: #1a201a;
+  touch-action: manipulation;
 }
 
-.font-pixel {
-  font-family: 'Tiny5', monospace;
+/* Скроллбар в стиле игры */
+::-webkit-scrollbar {
+  width: 6px;
 }
 
-.custom-scrollbar::-webkit-scrollbar {
-  width: 3px;
+::-webkit-scrollbar-track {
+  background: #191520;
 }
 
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
+::-webkit-scrollbar-thumb {
+  background: #294566;
+  border-radius: 3px;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
+::-webkit-scrollbar-thumb:hover {
+  background: #2c6cba;
 }
 
-.bg-gradient-radial {
-  background-image: radial-gradient(var(--tw-gradient-stops));
+/* Анимации */
+@keyframes bounce-in {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes float-up {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-60px); opacity: 0; }
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.3s ease-out;
+}
+
+.animate-float-up {
+  animation: float-up 1.5s ease-out forwards;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-1px); }
+  20%, 40%, 60%, 80% { transform: translateX(1px); }
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out infinite;
+}
+
+/* Эффект свечения для замка */
+@keyframes castle-glow {
+  0%, 100% { box-shadow: 0 0 5px #f8d877, 0 0 10px #f8d87755; }
+  50% { box-shadow: 0 0 15px #f8d877, 0 0 25px #f8d877aa; }
+}
+
+/* Пульсация ресурсов */
+@keyframes resource-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+
+.animate-resource-pulse {
+  animation: resource-pulse 260ms ease-out;
+}
+
+/* Пульсация кнопок панелей */
+@keyframes panel-button-pulse {
+  0%, 100% { 
+    background: linear-gradient(135deg, #294566 0%, #2c6cba 50%, #294566 100%);
+    box-shadow: 0 0 8px rgba(44, 108, 186, 0.4);
+  }
+  50% { 
+    background: linear-gradient(135deg, #2c6cba 0%, #85c4d7 50%, #2c6cba 100%);
+    box-shadow: 0 0 15px rgba(133, 196, 215, 0.6);
+  }
+}
+
+.panel-button-pulse {
+  animation: panel-button-pulse 2s ease-in-out infinite;
+}
+
+/* Пульсация кнопки рейда */
+@keyframes raid-button-pulse {
+  0%, 100% { 
+    background: linear-gradient(135deg, #723738 0%, #e93f59 50%, #723738 100%);
+    box-shadow: 0 0 8px rgba(233, 63, 89, 0.4);
+  }
+  50% { 
+    background: linear-gradient(135deg, #e93f59 0%, #ffa057 50%, #e93f59 100%);
+    box-shadow: 0 0 15px rgba(233, 63, 89, 0.7);
+  }
+}
+
+.raid-button-pulse {
+  animation: raid-button-pulse 1s ease-in-out infinite;
+}
+
+@keyframes shine {
+  100% {
+    left: 125%;
+  }
+}
+
+.animate-shine {
+  animation: shine 0.75s;
+}
+
+/* Анимация подбрасывания цифры */
+@keyframes digit-bounce {
+  0% { transform: translateY(0); }
+  30% { transform: translateY(-3px); }
+  60% { transform: translateY(1px); }
+  100% { transform: translateY(0); }
+}
+
+.animate-digit-bounce {
+  animation: digit-bounce 150ms ease-out;
+}
+
+/* Cartoon-анимация для пассивных FloatingNumbers */
+@keyframes float-cartoon {
+  0% {
+    transform: translateY(0) scale(0.5);
+    opacity: 0;
+  }
+  15% {
+    transform: translateY(-25px) scale(1.2);
+    opacity: 1;
+  }
+  25% {
+    transform: translateY(-30px) scale(1);
+    opacity: 1;
+  }
+  /* Резкая остановка на пике */
+  35% {
+    transform: translateY(-30px) scale(1);
+    opacity: 1;
+  }
+  /* Плавный улёт вверх и растворение */
+  100% {
+    transform: translateY(-80px) scale(0.8);
+    opacity: 0;
+  }
+}
+
+.animate-float-cartoon {
+  animation: float-cartoon 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Анимация для клика по замку (быстрая, простая) */
+@keyframes float-click {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-60px) scale(0.9);
+    opacity: 0;
+  }
+}
+
+.animate-float-click {
+  animation: float-click 0.8s ease-out forwards;
 }
