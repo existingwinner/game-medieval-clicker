@@ -39,7 +39,6 @@ export function App() {
     setGameState(state);
   }, []);
 
-  // Мгновенное добавление floating numbers без буферизации
   const handleFloatingNumber = useCallback((fn: FloatingNumber) => {
     setFloatingNumbers(prev => [...prev, fn]);
   }, []);
@@ -70,14 +69,12 @@ export function App() {
       const clickedInsideBuild = buildPanel?.contains(target) ?? false;
       const clickedInsideRaid = raidPanel?.contains(target) ?? false;
 
-      // Закрываем панели только если клик/тап вне них
       if (!clickedInsideBuild && !clickedInsideRaid) {
         setBuildPanelOpen(false);
         setRaidPanelOpen(false);
       }
     };
 
-    // pointerdown с capture, чтобы не зависеть от onClick и порядка всплытия
     window.addEventListener('pointerdown', handleOutsidePointerDown, { capture: true });
     return () => {
       window.removeEventListener('pointerdown', handleOutsidePointerDown, { capture: true } as any);
@@ -113,6 +110,7 @@ export function App() {
   const handleCellClick = useCallback((position: GridPosition) => {
     const { row, col } = position;
     
+    // Prevent clicking on castle position
     if (row === 4 && col === 2) return;
 
     if (selectedBuilding) {
@@ -250,8 +248,8 @@ export function App() {
 
   return (
     <div className={`h-[100dvh] bg-[#191520] flex flex-col overflow-hidden transition-all ${gameState.raid.isActive ? 'animate-shake' : ''}`}>
-      {/* Верхняя панель (фиксированная зона, не сжимается) */}
-      <div className="shrink-0">
+      {/* Верхняя панель */}
+      <div className="shrink-0 safe-area-top">
         <ResourceBar 
           resources={gameState.resources}
           wave={gameState.raid.wave}
@@ -265,25 +263,8 @@ export function App() {
         />
       </div>
 
-      {/* Основная область игры (сжимается при необходимости, но не налезает) */}
-      <div
-        className="flex-1 relative overflow-hidden min-h-0 flex flex-col items-center justify-center pt-3"
-        data-grid
-        onPointerDownCapture={(e) => {
-          const target = e.target as Node | null;
-          if (!target) return;
-
-          const buildPanel = document.getElementById('build-panel');
-          const raidPanel = document.getElementById('raid-panel');
-          const clickedInsideBuild = buildPanel?.contains(target) ?? false;
-          const clickedInsideRaid = raidPanel?.contains(target) ?? false;
-
-          if (!clickedInsideBuild && !clickedInsideRaid) {
-            setBuildPanelOpen(false);
-            setRaidPanelOpen(false);
-          }
-        }}
-      >
+      {/* Основная область игры */}
+      <div className="flex-1 relative overflow-visible min-h-0 flex flex-col items-center justify-center py-1 px-2">
         <GameGrid
           gameState={gameState}
           selectedBuilding={selectedBuilding}
@@ -294,7 +275,6 @@ export function App() {
           }}
         />
 
-        {/* Плавающие числа */}
         <FloatingNumbers numbers={floatingNumbers} onComplete={handleFloatingComplete} />
       </div>
 
@@ -325,7 +305,6 @@ export function App() {
         showToggleButton={false}
       />
 
-      {/* Модальное окно здания */}
       {modalBuilding && (
         <BuildingModal
           building={modalBuilding}
@@ -339,86 +318,71 @@ export function App() {
         />
       )}
 
-      {/* Нижняя зона управления (не перекрывает поле) */}
-      {(() => {
-        const repairCost = engineRef.current?.getRepairAllCost() || { wood: 0, stone: 0, count: 0 };
-        const canRepairAll = engineRef.current?.canRepairAll() || false;
-        const anyDamaged = repairCost.count > 0;
+      {/* Нижняя панель управления */}
+      <div className="shrink-0 safe-area-bottom pb-2 pt-1">
+        <div className="w-full px-3">
+          <div className="mx-auto max-w-md flex items-center justify-between gap-3">
+            <button
+              onPointerDown={(e) => {
+                e.stopPropagation();
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setRaidPanelOpen(false);
+                setBuildPanelOpen(prev => !prev);
+              }}
+              className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 bg-[#2a2d3c]/80 border-[#294566] text-[#f0efdf] hover:border-[#85c4d7] hover:text-[#85c4d7] flex items-center justify-center font-bold active:scale-95 transition-all select-none`}
+              title="Постройки"
+            >
+              <span className="text-xl sm:text-2xl">🏗️</span>
+            </button>
 
-        const circleBase =
-          'w-14 h-14 rounded-full border-2 flex items-center justify-center font-bold transition-all active:scale-95 select-none';
+            <button
+              onPointerDown={(e) => {
+                e.stopPropagation();
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleRepairAll();
+              }}
+              disabled={!engineRef.current?.canRepairAll()}
+              className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 flex items-center justify-center font-bold active:scale-95 transition-all select-none ${
+                engineRef.current?.canRepairAll()
+                  ? 'bg-[#294566] border-[#4b7c52] text-[#f0efdf] shadow-[0_0_12px_rgba(75,124,82,0.25)]'
+                  : 'bg-[#2a2d3c]/80 border-[#294566] text-[#85c4d7] opacity-70'
+              }`}
+              title="Починить всё"
+            >
+              <span className="text-xl sm:text-2xl">🔧</span>
+            </button>
 
-        return (
-          <div className="shrink-0 w-full px-3 pb-3 pt-2">
-            <div className="mx-auto max-w-md flex items-center justify-between gap-3">
-              {/* Постройки */}
-              <button
-                onPointerDown={(e) => {
-                  e.stopPropagation();
-                }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setRaidPanelOpen(false);
-                  setBuildPanelOpen(prev => !prev);
-                }}
-                className={`${circleBase} bg-[#2a2d3c]/80 border-[#294566] text-[#f0efdf] hover:border-[#85c4d7] hover:text-[#85c4d7]`}
-                title="Постройки"
-              >
-                🏗️
-              </button>
-
-              {/* Починить всё */}
-              <button
-                onPointerDown={(e) => {
-                  e.stopPropagation();
-                }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleRepairAll();
-                }}
-                disabled={!anyDamaged || !canRepairAll}
-                className={`${circleBase} ${
-                  anyDamaged
-                    ? canRepairAll
-                      ? 'bg-[#294566] border-[#4b7c52] text-[#f0efdf] shadow-[0_0_12px_rgba(75,124,82,0.25)]'
-                      : 'bg-[#294566]/80 border-[#294566] text-[#f0efdf] opacity-70'
-                    : 'bg-[#2a2d3c]/80 border-[#294566] text-[#85c4d7] opacity-70'
-                }`}
-                title={anyDamaged ? `Починить всё (${repairCost.count})` : 'Все здания целы'}
-              >
-                🔧
-              </button>
-
-              {/* Набеги */}
-              <button
-                onPointerDown={(e) => {
-                  e.stopPropagation();
-                }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setBuildPanelOpen(false);
-                  setRaidPanelOpen(prev => !prev);
-                }}
-                className={`${circleBase} bg-[#2a2d3c]/80 border-[#294566] text-[#f0efdf] hover:border-[#e93f59] hover:text-[#e93f59]`}
-                title="Набеги и журнал"
-              >
-                ⚔️
-              </button>
-            </div>
-
-            {/* Небольшая подсказка при выборе здания — не перекрывает */}
-            {selectedBuilding && (
-              <div className="mt-2 mx-auto max-w-md">
-                <div className="bg-[#2a2d3c] border border-[#294566] px-3 py-2 rounded text-center">
-                  <p className="text-[#85c4d7] font-medium" style={{ fontSize: 'clamp(0.75rem, 2.5vw, 0.9rem)' }}>
-                    👆 Выберите ячейку для постройки
-                  </p>
-                </div>
-              </div>
-            )}
+            <button
+              onPointerDown={(e) => {
+                e.stopPropagation();
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setBuildPanelOpen(false);
+                setRaidPanelOpen(prev => !prev);
+              }}
+              className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 bg-[#2a2d3c]/80 border-[#294566] text-[#f0efdf] hover:border-[#e93f59] hover:text-[#e93f59] flex items-center justify-center font-bold active:scale-95 transition-all select-none`}
+              title="Набеги и журнал"
+            >
+              <span className="text-xl sm:text-2xl">⚔️</span>
+            </button>
           </div>
-        );
-      })()}
+
+          {selectedBuilding && (
+            <div className="mt-2 mx-auto max-w-md">
+              <div className="bg-[#2a2d3c] border border-[#294566] px-3 py-2 rounded text-center">
+                <p className="text-[#85c4d7] font-medium text-xs sm:text-sm">
+                  👆 Выберите ячейку для постройки
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
