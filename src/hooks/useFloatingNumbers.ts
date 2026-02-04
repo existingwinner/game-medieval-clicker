@@ -1,0 +1,64 @@
+import { useState, useCallback, RefObject } from 'react';
+import { FloatingNumber } from '../types';
+
+export const useFloatingNumbers = (
+  castleRef: RefObject<HTMLButtonElement | null>,
+  buildingRefs: RefObject<{[key: string]: HTMLDivElement | null}>,
+  gameOver: boolean
+) => {
+  const [floatingNumbers, setFloatingNumbers] = useState<FloatingNumber[]>([]);
+
+  const showFloatingNumber = useCallback((value: number, type = 'click') => {
+    if (!castleRef.current || gameOver) return;
+    const r = castleRef.current.getBoundingClientRect();
+    if (r.width === 0) return;
+    
+    const id = Date.now() + Math.random();
+    const newNumber: FloatingNumber = {
+      id,
+      value,
+      x: r.left + r.width / 2 + (Math.random() - 0.5) * r.width * 0.3,
+      y: r.top + r.height / 2 + (Math.random() - 0.5) * r.height * 0.25,
+      color: type === 'income' ? 'text-emerald-300' : 'text-amber-300',
+      fromCastle: true
+    };
+    
+    setFloatingNumbers(prev => [...prev, newNumber]);
+    setTimeout(() => setFloatingNumbers(prev => prev.filter(n => n.id !== id)), 2800);
+  }, [castleRef, gameOver]);
+
+  const showFloatingNumberFromBuilding = useCallback((value: number, buildingId: string, index: number) => {
+    if (!castleRef.current || gameOver) return;
+    const cR = castleRef.current.getBoundingClientRect();
+    const bE = buildingRefs.current?.[buildingId];
+    if (!bE || cR.width === 0) return;
+    
+    const bR = bE.getBoundingClientRect();
+    const id = Date.now() + Math.random() + index;
+    
+    const newNumber: FloatingNumber = {
+      id,
+      value,
+      startX: bR.right + 10,
+      startY: bR.top + bR.height / 2,
+      endX: cR.left + cR.width / 2,
+      endY: cR.top + cR.height / 2,
+      color: 'text-emerald-300',
+      fromBuilding: true
+    };
+    
+    setFloatingNumbers(prev => [...prev, newNumber]);
+    setTimeout(() => setFloatingNumbers(prev => prev.filter(n => n.id !== id)), 2500);
+  }, [castleRef, buildingRefs, gameOver]);
+
+  const clearFloatingNumbers = useCallback(() => {
+    setFloatingNumbers([]);
+  }, []);
+
+  return {
+    floatingNumbers,
+    showFloatingNumber,
+    showFloatingNumberFromBuilding,
+    clearFloatingNumbers
+  };
+};
