@@ -8,17 +8,31 @@ export const useFloatingNumbers = (
 ) => {
   const [floatingNumbers, setFloatingNumbers] = useState<FloatingNumber[]>([]);
 
-  const showFloatingNumber = useCallback((value: number, type = 'click') => {
-    if (!castleRef.current || gameOver) return;
-    const r = castleRef.current.getBoundingClientRect();
-    if (r.width === 0) return;
+  // Обновленная функция, которая принимает необязательные координаты
+  const showFloatingNumber = useCallback((value: number, type = 'click', startX?: number, startY?: number) => {
+    if (gameOver) return;
+    
+    let x: number, y: number;
+    
+    // Если переданы координаты, используем их
+    if (startX !== undefined && startY !== undefined) {
+      x = startX;
+      y = startY;
+    } else {
+      // Иначе используем координаты замка
+      if (!castleRef.current) return;
+      const r = castleRef.current.getBoundingClientRect();
+      if (r.width === 0) return;
+      x = r.left + r.width / 2 + (Math.random() - 0.5) * r.width * 0.3;
+      y = r.top + r.height / 2 + (Math.random() - 0.5) * r.height * 0.25;
+    }
     
     const id = Date.now() + Math.random();
     const newNumber: FloatingNumber = {
       id,
       value,
-      x: r.left + r.width / 2 + (Math.random() - 0.5) * r.width * 0.3,
-      y: r.top + r.height / 2 + (Math.random() - 0.5) * r.height * 0.25,
+      x,
+      y,
       color: type === 'income' ? 'text-emerald-400' : 'text-amber-400',
       fromCastle: true
     };
