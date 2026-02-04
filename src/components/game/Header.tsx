@@ -26,7 +26,7 @@ export const Header = ({ points, totalIncome, onReset }: HeaderProps) => {
       </div>
       <button
         onClick={onReset}
-        className="p-2.5 bg-white/5 hover:bg-rose-900/20 rounded-xl border border-white/5 transition-all text-stone-500 hover:text-rose-400"
+        className="p-2.5 bg-white/5 hover:bg-rose-900/20 rounded-xl border border-white/5 transition-all text-stone-300 hover:text-rose-400"
       >
         <RotateCcw className="w-5 h-5" />
       </button>

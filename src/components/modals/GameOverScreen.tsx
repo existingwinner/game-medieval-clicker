@@ -16,7 +16,7 @@ export const GameOverScreen = ({ isGameOver, wave, onRestart }: GameOverScreenPr
         <h2 className="text-2xl font-bold text-rose-100 tracking-[0.2em] uppercase mb-2">
           Цитадель пала
         </h2>
-        <div className="text-4xl font-bold text-amber-500/80 mb-10 tabular-nums">
+        <div className="text-4xl font-bold text-amber-300 mb-10 tabular-nums">
           {wave}
           <span className="text-[10px] block opacity-40 uppercase tracking-[0.3em] mt-2">
             Выдержано волн

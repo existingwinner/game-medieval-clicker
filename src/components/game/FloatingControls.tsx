@@ -30,7 +30,7 @@ export const FloatingControls = ({
           className={`p-4 rounded-2xl transition-all duration-500 border ${
             showBuildings
               ? 'bg-amber-500/20 text-amber-400 border-amber-500/40'
-              : 'bg-white/5 text-stone-600 hover:text-stone-300 border-white/5'
+              : 'bg-white/5 text-stone-300 hover:text-stone-300 border-white/5'
           }`}
         >
           <Hammer className="w-6 h-6" strokeWidth={1.5} />
@@ -59,7 +59,7 @@ export const FloatingControls = ({
           className={`p-4 rounded-2xl transition-all duration-500 border ${
             showRaid
               ? 'bg-rose-500/20 text-rose-400 border-rose-500/40'
-              : 'bg-white/5 text-stone-600 hover:text-stone-300 border-white/5'
+              : 'bg-white/5 text-stone-300 hover:text-stone-300 border-white/5'
           }`}
         >
           <Skull className="w-6 h-6" strokeWidth={1.5} />

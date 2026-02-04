@@ -17,12 +17,12 @@ export const RaidPanel = ({ isOpen, onClose, raid, gameOver, onShare }: RaidPane
       }`}
     >
       <div className="flex items-center justify-between p-6 border-b border-white/5">
-        <h2 className="text-sm font-bold text-rose-300/60 uppercase tracking-[0.3em] flex items-center gap-3">
-          <Skull className="w-4 h-4 text-rose-600/60" /> Угроза
+        <h2 className="text-sm font-bold text-rose-200 uppercase tracking-[0.3em] flex items-center gap-3">
+          <Skull className="w-4 h-4 text-rose-400" /> Угроза
         </h2>
         <button
           onClick={onClose}
-          className="p-2 hover:bg-white/5 rounded-full transition-all text-stone-600"
+          className="p-2 hover:bg-white/5 rounded-full transition-all text-stone-300"
         >
           <X className="w-5 h-5" />
         </button>
@@ -32,10 +32,10 @@ export const RaidPanel = ({ isOpen, onClose, raid, gameOver, onShare }: RaidPane
         {/* Goblin counter */}
         <div className="bg-black/20 p-6 rounded-3xl border border-white/[0.02] space-y-5">
           <div className="flex justify-between items-end">
-            <span className="text-stone-600 text-[10px] font-bold uppercase tracking-[0.2em]">
+            <span className="text-stone-300 text-[10px] font-bold uppercase tracking-[0.2em]">
               Численность
             </span>
-            <span className="text-rose-500 text-3xl font-bold tabular-nums">
+            <span className="text-rose-300 text-3xl font-bold tabular-nums">
               {raid.active ? raid.goblins : raid.nextGoblins}
             </span>
           </div>
@@ -53,10 +53,10 @@ export const RaidPanel = ({ isOpen, onClose, raid, gameOver, onShare }: RaidPane
 
         {/* Wave counter */}
         <div className="bg-white/[0.02] p-5 rounded-2xl border border-white/[0.03] text-center">
-          <div className="text-stone-600 text-[10px] uppercase font-bold tracking-widest mb-2 font-sans">
+          <div className="text-stone-300 text-[10px] uppercase font-bold tracking-widest mb-2 font-sans">
             Волна
           </div>
-          <div className="text-3xl font-bold text-amber-500/80 tabular-nums">
+          <div className="text-3xl font-bold text-amber-300 tabular-nums">
             {raid.wave}
           </div>
         </div>
@@ -67,7 +67,7 @@ export const RaidPanel = ({ isOpen, onClose, raid, gameOver, onShare }: RaidPane
             onClick={onShare}
             className="w-full py-4 bg-white/[0.03] hover:bg-white/[0.08] rounded-2xl font-bold text-xs uppercase tracking-[0.2em] border border-white/5 flex items-center justify-center gap-3 transition-all"
           >
-            <Share2 className="w-4 h-4 text-stone-400" /> Поделиться
+            <Share2 className="w-4 h-4 text-stone-300" /> Поделиться
           </button>
         )}
       </div>

@@ -19,7 +19,7 @@ export const RaidNotification = ({ showStart, showEnd, goblins, wave }: RaidNoti
           className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none p-4"
         >
           <div className="bg-[#1a0505]/95 border border-rose-900/50 backdrop-blur-xl rounded-2xl p-8 text-center shadow-2xl">
-            <Skull className="w-16 h-16 mx-auto mb-4 text-rose-500" />
+            <Skull className="w-16 h-16 mx-auto mb-4 text-rose-300" />
             <div className="text-3xl font-bold text-rose-100 tracking-[0.2em] uppercase">
               Набег орды!
             </div>

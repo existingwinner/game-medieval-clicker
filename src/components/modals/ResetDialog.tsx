@@ -16,19 +16,19 @@ export const ResetDialog = ({ isOpen, onConfirm, onCancel }: ResetDialogProps) =
         <h3 className="text-lg font-bold text-stone-100 uppercase tracking-widest mb-4">
           Отречение
         </h3>
-        <p className="text-stone-500 text-sm mb-8 leading-relaxed font-sans font-bold">
+        <p className="text-stone-300 text-sm mb-8 leading-relaxed font-sans font-bold">
           Вы уверены, что хотите стереть всю историю своего правления?
         </p>
         <div className="flex gap-3">
           <button
             onClick={onConfirm}
-            className="flex-1 py-3.5 bg-rose-600/10 hover:bg-rose-600/20 text-rose-500 rounded-xl font-bold text-[10px] uppercase tracking-widest border border-rose-600/20 transition-all"
+            className="flex-1 py-3.5 bg-rose-600/10 hover:bg-rose-600/20 text-rose-300 rounded-xl font-bold text-[10px] uppercase tracking-widest border border-rose-600/20 transition-all"
           >
             Сброс
           </button>
           <button
             onClick={onCancel}
-            className="flex-1 py-3.5 bg-white/5 hover:bg-white/10 text-stone-400 rounded-xl font-bold text-[10px] uppercase tracking-widest border border-white/5 transition-all"
+            className="flex-1 py-3.5 bg-white/5 hover:bg-white/10 text-stone-300 rounded-xl font-bold text-[10px] uppercase tracking-widest border border-white/5 transition-all"
           >
             Отмена
           </button>

@@ -30,11 +30,11 @@ export const Castle = forwardRef<HTMLButtonElement, CastleProps>(
             }`}
           >
             <div className="relative drop-shadow-[0_40px_60px_rgba(0,0,0,0.8)]">
-              <CastleIcon className="w-48 h-48 sm:w-64 sm:h-64 text-stone-400/90" strokeWidth={1.2} />
+              <CastleIcon className="w-48 h-48 sm:w-64 sm:h-64 text-stone-300/90" strokeWidth={1.2} />
               <Crown className="absolute -top-8 left-1/2 -translate-x-1/2 w-12 h-12 text-amber-500/40 animate-pulse" />
             </div>
             <div className="mt-8 px-10 py-2.5 bg-stone-950/40 backdrop-blur-xl rounded-full border border-white/5">
-              <span className="text-stone-400 text-xs font-bold tracking-[0.4em] uppercase opacity-60">
+              <span className="text-stone-300 text-xs font-bold tracking-[0.4em] uppercase opacity-60">
                 Цитадель
               </span>
             </div>
@@ -43,7 +43,7 @@ export const Castle = forwardRef<HTMLButtonElement, CastleProps>(
 
         {/* Health Bar Card */}
         <div className="w-72 sm:w-96 bg-stone-950/20 backdrop-blur-xl p-6 rounded-[2rem] border border-white/[0.03] shadow-2xl">
-          <div className="flex justify-between items-center mb-3 text-[10px] uppercase tracking-[0.2em] font-bold text-stone-500">
+          <div className="flex justify-between items-center mb-3 text-[10px] uppercase tracking-[0.2em] font-bold text-stone-300">
             <span>Целостность</span>
             <span className="text-stone-300/80">
               {Math.ceil(castleHP)} / {maxCastleHP}
