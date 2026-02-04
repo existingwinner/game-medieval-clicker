@@ -9,7 +9,7 @@ export const INITIAL_BUILDINGS: Omit<Building, 'currentHP'>[] = [
     baseCost: 20, 
     baseIncome: 0.3, 
     count: 0, 
-    color: 'bg-amber-300/80', 
+    color: 'bg-amber-1000/80', 
     icon: Wheat, 
     maxHP: 25 
   },
@@ -20,7 +20,7 @@ export const INITIAL_BUILDINGS: Omit<Building, 'currentHP'>[] = [
     baseCost: 100, 
     baseIncome: 1.5, 
     count: 0, 
-    color: 'bg-slate-300/80', 
+    color: 'bg-slate-1000/80', 
     icon: Hammer, 
     maxHP: 45 
   },
@@ -31,7 +31,7 @@ export const INITIAL_BUILDINGS: Omit<Building, 'currentHP'>[] = [
     baseCost: 250, 
     baseIncome: 4, 
     count: 0, 
-    color: 'bg-indigo-300/80', 
+    color: 'bg-indigo-1000/80', 
     icon: Church, 
     maxHP: 70 
   },
@@ -42,7 +42,7 @@ export const INITIAL_BUILDINGS: Omit<Building, 'currentHP'>[] = [
     baseCost: 1000, 
     baseIncome: 12, 
     count: 0, 
-    color: 'bg-zinc-300/80', 
+    color: 'bg-zinc-1000/80', 
     icon: Pickaxe, 
     maxHP: 95 
   },
@@ -53,7 +53,7 @@ export const INITIAL_BUILDINGS: Omit<Building, 'currentHP'>[] = [
     baseCost: 4000, 
     baseIncome: 50, 
     count: 0, 
-    color: 'bg-emerald-300/80', 
+    color: 'bg-emerald-1000/80', 
     icon: Scroll, 
     maxHP: 140 
   },
@@ -64,7 +64,7 @@ export const INITIAL_BUILDINGS: Omit<Building, 'currentHP'>[] = [
     baseCost: 20000, 
     baseIncome: 250, 
     count: 0, 
-    color: 'bg-amber-300/80', 
+    color: 'bg-amber-1000/80', 
     icon: Gem, 
     maxHP: 230 
   }

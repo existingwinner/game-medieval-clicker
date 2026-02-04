@@ -19,7 +19,7 @@ export const useFloatingNumbers = (
       value,
       x: r.left + r.width / 2 + (Math.random() - 0.5) * r.width * 0.3,
       y: r.top + r.height / 2 + (Math.random() - 0.5) * r.height * 0.25,
-      color: type === 'income' ? 'text-emerald-300' : 'text-amber-300',
+      color: type === 'income' ? 'text-emerald-400' : 'text-amber-400',
       fromCastle: true
     };
     
@@ -43,7 +43,7 @@ export const useFloatingNumbers = (
       startY: bR.top + bR.height / 2,
       endX: cR.left + cR.width / 2,
       endY: cR.top + cR.height / 2,
-      color: 'text-emerald-300',
+      color: 'text-emerald-400',
       fromBuilding: true
     };
     
