@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useEffect, useState } from 'react';
 import { GameState, GridPosition, Building, GRID_ROWS, GRID_COLS, CENTER_ROW, CENTER_COL } from '../types/game';
 import { BuildingCell } from './BuildingCell';
 import { getBuildingType, MAIN_BUILDING } from '../data/buildings';
@@ -18,6 +18,7 @@ export const GameGrid: FC<GameGridProps> = ({
   onBuildingLongPress,
   onCastleClick
 }) => {
+  const [gridSize, setGridSize] = useState({ width: 300, height: 420 });
   const cells = useMemo(() => {
     const result: GridPosition[] = [];
     for (let row = 0; row < GRID_ROWS; row++) {
@@ -28,17 +29,56 @@ export const GameGrid: FC<GameGridProps> = ({
     return result;
   }, []);
 
+  // Адаптивный расчет размера сетки
+  useEffect(() => {
+    const updateGridSize = () => {
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      
+      // Определяем доступное пространство (исключая панели ресурсов и управления)
+      const availableHeight = viewportHeight * 0.5; // 50% высоты экрана для сетки
+      const availableWidth = Math.min(viewportWidth * 0.95, 380);
+      
+      // Рассчитываем размер ячейки на основе доступного пространства
+      const cellSize = Math.min(
+        availableWidth / GRID_COLS - 10, // минус gap
+        availableHeight / GRID_ROWS - 10
+      );
+      
+      // Ограничиваем минимальный и максимальный размер ячейки
+      const minCellSize = 40;
+      const maxCellSize = 60;
+      const clampedCellSize = Math.max(minCellSize, Math.min(maxCellSize, cellSize));
+      
+      setGridSize({
+        width: clampedCellSize * GRID_COLS + 10 * (GRID_COLS - 1),
+        height: clampedCellSize * GRID_ROWS + 10 * (GRID_ROWS - 1)
+      });
+    };
+
+    updateGridSize();
+    window.addEventListener('resize', updateGridSize);
+    window.addEventListener('orientationchange', updateGridSize);
+    
+    return () => {
+      window.removeEventListener('resize', updateGridSize);
+      window.removeEventListener('orientationchange', updateGridSize);
+    };
+  }, []);
+
   return (
-    <div className="relative w-full flex-1 flex items-center justify-center p-1 min-h-0">
+    <div className="relative w-full flex-1 flex items-center justify-center p-1 min-h-0 overflow-visible">
       <div 
         className="relative select-none"
         style={{
-          width: 'min(94vw, 100%)',
-          height: 'min(70vh, 98%)',
+          width: `${gridSize.width}px`,
+          height: `${gridSize.height}px`,
           display: 'grid',
           gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)`,
           gridTemplateRows: `repeat(${GRID_ROWS}, 1fr)`,
           gap: '10px',
+          maxWidth: '95vw',
+          maxHeight: '55vh',
           aspectRatio: `${GRID_COLS} / ${GRID_ROWS}`
         }}
       >
@@ -68,15 +108,20 @@ export const GameGrid: FC<GameGridProps> = ({
                     data-building-pos={`${CENTER_ROW}-${CENTER_COL}`}
                     className="absolute w-[150%] h-[150%] aspect-square flex items-center justify-center transition-all duration-100 active:scale-90 origin-center cursor-pointer select-none touch-none z-30 outline-none group castle-button"
                     onClick={(e) => onCastleClick?.(e.clientX, e.clientY)}
+                    style={{
+                      // Динамический размер замка
+                      transform: 'scale(1)',
+                      maxWidth: '100%',
+                      maxHeight: '100%',
+                    }}
                   >
                     {/* Свечение при наведении/активности */}
                     <div className="absolute inset-0 bg-[#f8d877]/0 group-hover:bg-[#f8d877]/20 group-active:bg-[#f8d877]/40 blur-lg rounded-full transition-all duration-200 pointer-events-none" />
-                    {/* Основной контейнер замка - нейтральный фон, подсветка при клике */}
+                    {/* Основной контейнер замка */}
                     <div className="relative w-full h-full bg-[#2a2d3c] group-active:bg-[#3a3d4c] rounded-full border-[3px] border-[#294566] group-hover:border-[#f8d877]/50 group-active:border-[#f8d877] shadow-[0_4px_12px_rgba(0,0,0,0.5)] flex items-center justify-center overflow-hidden transition-all duration-150">
-                      <span className="text-[clamp(1.8rem,10vmin,3rem)] drop-shadow-md select-none group-active:scale-110 transition-transform">
+                      <span className="text-[clamp(1.5rem, 8vmin, 2.5rem)] drop-shadow-md select-none group-active:scale-110 transition-transform">
                         {MAIN_BUILDING.emoji}
                       </span>
-                      {/* Shine effect on click */}
                       <div className="absolute inset-0 bg-gradient-to-br from-[#f8d877]/0 to-[#f8d877]/0 group-active:from-[#f8d877]/30 group-active:to-transparent transition-all duration-150 rounded-full" />
                     </div>
                   </button>
