@@ -1,4 +1,4 @@
-import { Skull, Share2, X } from 'lucide-react';
+import { Skull, Share2, X, MessageCircle } from 'lucide-react';
 import { Raid } from '../../types';
 
 interface RaidPanelProps {
@@ -7,9 +7,17 @@ interface RaidPanelProps {
   raid: Raid;
   gameOver: boolean;
   onShare: () => void;
+  onTelegramShare?: () => void; // Добавляем новую пропсу
 }
 
-export const RaidPanel = ({ isOpen, onClose, raid, gameOver, onShare }: RaidPanelProps) => {
+export const RaidPanel = ({ 
+  isOpen, 
+  onClose, 
+  raid, 
+  gameOver, 
+  onShare,
+  onTelegramShare 
+}: RaidPanelProps) => {
   return (
     <div
       className={`fixed top-16 right-0 h-[calc(100vh-4rem)] bg-[#0d0a0a]/95 border-l border-white/5 backdrop-blur-2xl transform transition-transform duration-500 ease-out z-30 w-full sm:w-80 ${
@@ -35,14 +43,14 @@ export const RaidPanel = ({ isOpen, onClose, raid, gameOver, onShare }: RaidPane
             <span className="text-stone-300 text-[10px] font-bold uppercase tracking-[0.2em]">
               Численность
             </span>
-            <span className="text-rose-300 text-3xl font-bold tabular-nums">
+            <span className="text-rose-400 text-3xl font-bold tabular-nums">
               {raid.active ? raid.goblins : raid.nextGoblins}
             </span>
           </div>
           <div className="h-2 bg-stone-900 rounded-full overflow-hidden border border-white/5">
             <div
               className={`h-full transition-all duration-100 ease-linear ${
-                raid.active ? 'bg-rose-600' : 'bg-amber-600/40'
+                raid.active ? 'bg-rose-500' : 'bg-amber-500/60'
               }`}
               style={{
                 width: `${raid.active ? (raid.duration / 15) * 100 : raid.progress}%`
@@ -56,19 +64,31 @@ export const RaidPanel = ({ isOpen, onClose, raid, gameOver, onShare }: RaidPane
           <div className="text-stone-300 text-[10px] uppercase font-bold tracking-widest mb-2 font-sans">
             Волна
           </div>
-          <div className="text-3xl font-bold text-amber-300 tabular-nums">
+          <div className="text-3xl font-bold text-amber-400 tabular-nums">
             {raid.wave}
           </div>
         </div>
 
-        {/* Share button */}
+        {/* Share buttons */}
         {!gameOver && (
-          <button
-            onClick={onShare}
-            className="w-full py-4 bg-white/[0.03] hover:bg-white/[0.08] rounded-2xl font-bold text-xs uppercase tracking-[0.2em] border border-white/5 flex items-center justify-center gap-3 transition-all"
-          >
-            <Share2 className="w-4 h-4 text-stone-300" /> Поделиться
-          </button>
+          <div className="space-y-3">
+            <button
+              onClick={onShare}
+              className="w-full py-4 bg-white/[0.03] hover:bg-white/[0.08] rounded-2xl font-bold text-xs uppercase tracking-[0.2em] border border-white/5 flex items-center justify-center gap-3 transition-all text-stone-200"
+            >
+              <Share2 className="w-4 h-4 text-stone-300" /> Поделиться
+            </button>
+            
+            {/* Добавляем кнопку Telegram */}
+            {onTelegramShare && (
+              <button
+                onClick={onTelegramShare}
+                className="w-full py-4 bg-blue-100 hover:bg-blue-200 rounded-2xl font-bold text-xs uppercase tracking-[0.2em] border border-blue-300 flex items-center justify-center gap-3 transition-all text-blue-700"
+              >
+                <MessageCircle className="w-4 h-4" /> Поделиться в Telegram
+              </button>
+            )}
+          </div>
         )}
       </div>
     </div>

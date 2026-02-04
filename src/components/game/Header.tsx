@@ -12,21 +12,21 @@ export const Header = ({ points, totalIncome, onReset }: HeaderProps) => {
     <header className="bg-stone-950/40 backdrop-blur-lg border-b border-white/5 py-3 px-4 sm:px-6 flex justify-between items-center sticky top-0 z-40">
       <div className="flex items-center gap-4">
         <div className="flex items-center bg-white/[0.03] px-4 py-2 rounded-xl border border-white/[0.05]">
-          <Coins className="w-5 h-5 text-amber-500 mr-3" />
-          <span className="font-bold text-xl text-amber-50/90 tabular-nums">
+          <Coins className="w-5 h-5 text-amber-400 mr-3" /> {/* Было amber-500 */}
+          <span className="font-bold text-xl text-amber-50 tabular-nums"> {/* Убрал /90 */}
             {formatNumber(points)}
           </span>
         </div>
         <div className="hidden xs:flex items-center bg-emerald-500/5 px-4 py-2 rounded-xl border border-emerald-500/10">
-          <TrendingUp className="w-4 h-4 text-emerald-400 mr-2" />
-          <span className="text-sm font-bold text-emerald-400/80">
+          <TrendingUp className="w-4 h-4 text-emerald-300 mr-2" /> {/* Было emerald-400 */}
+          <span className="text-sm font-bold text-emerald-300"> {/* Убрал /80 */}
             +{formatNumber(totalIncome)}/с
           </span>
         </div>
       </div>
       <button
         onClick={onReset}
-        className="p-2.5 bg-white/5 hover:bg-rose-900/20 rounded-xl border border-white/5 transition-all text-stone-300 hover:text-rose-400"
+        className="p-2.5 bg-white/5 hover:bg-rose-900/20 rounded-xl border border-white/5 transition-all text-stone-300 hover:text-rose-300" /* Было stone-500 */
       >
         <RotateCcw className="w-5 h-5" />
       </button>

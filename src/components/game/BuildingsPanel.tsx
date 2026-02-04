@@ -29,12 +29,12 @@ export const BuildingsPanel = ({
       }`}
     >
       <div className="flex items-center justify-between p-6 border-b border-white/5">
-        <h2 className="text-sm font-bold text-amber-100 uppercase tracking-[0.3em] flex items-center gap-3">
+        <h2 className="text-sm font-bold text-amber-100 uppercase tracking-[0.3em] flex items-center gap-3"> {/* Было amber-200/60 */}
           <Hammer className="w-4 h-4" /> Архитектура
         </h2>
         <button
           onClick={onClose}
-          className="p-2 hover:bg-white/5 rounded-full transition-all text-stone-300"
+          className="p-2 hover:bg-white/5 rounded-full transition-all text-stone-300" /* Было stone-600 */
         >
           <X className="w-5 h-5" />
         </button>
@@ -51,13 +51,13 @@ export const BuildingsPanel = ({
               <div
                 className={`w-12 h-12 rounded-xl ${b.color} flex items-center justify-center shadow-2xl ring-1 ring-white/10`}
               >
-                <b.icon className="w-6 h-6 text-white/90" />
+                <b.icon className="w-6 h-6 text-white" /> {/* Убрал /90 */}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="font-bold text-stone-100 text-sm tracking-wide">
+                <div className="font-bold text-stone-50 text-sm tracking-wide"> {/* Было stone-100 */}
                   {b.name}
                 </div>
-                <div className="text-[10px] text-stone-300 mt-1 uppercase tracking-tighter italic">
+                <div className="text-[10px] text-stone-400 mt-1 uppercase tracking-tighter italic"> {/* Было stone-500 */}
                   {b.description}
                 </div>
               </div>
@@ -65,7 +65,7 @@ export const BuildingsPanel = ({
 
             {b.count > 0 && (
               <>
-                <div className="mb-4 text-[9px] uppercase tracking-widest text-stone-300 font-bold flex justify-between">
+                <div className="mb-4 text-[9px] uppercase tracking-widest text-stone-400 font-bold flex justify-between"> {/* Было stone-600 */}
                   <span>Статус</span>
                   <span>{Math.ceil(b.currentHP)} HP</span>
                 </div>
@@ -86,11 +86,11 @@ export const BuildingsPanel = ({
                     disabled={!canAfford || gameOver}
                     className={`py-2.5 rounded-xl font-bold text-[10px] transition-all border ${
                       canAfford
-                        ? 'bg-amber-500/5 border-amber-500/20 text-amber-100 hover:bg-amber-500/10'
-                        : 'bg-stone-900/20 border-white/[0.02] text-stone-700 opacity-40 cursor-not-allowed'
+                        ? 'bg-amber-500/5 border-amber-500/20 text-amber-100 hover:bg-amber-500/10' /* Было amber-200/70 */
+                        : 'bg-stone-900/20 border-white/[0.02] text-stone-500 opacity-40 cursor-not-allowed' /* Было stone-700 */
                     }`}
                   >
-                    <span className="opacity-40 text-[8px] uppercase block mb-0.5">
+                    <span className="opacity-60 text-[8px] uppercase block mb-0.5"> {/* Увеличил opacity */}
                       x{qty}
                     </span>
                     <span className="text-xs">💰{formatNumber(cost)}</span>

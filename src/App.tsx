@@ -101,6 +101,15 @@ const App = () => {
     setShowRaid(false);
   }, []);
 
+  const shareToTelegram = () => {
+  const message = `🏰 Мой замок выдержал ${game.raid.wave} волн гоблинов! Попробуй победить мой результат!`;
+  const url = window.encodeURIComponent(window.location.href);
+  const telegramUrl = `https://t.me/share/url?url=${url}&text=${window.encodeURIComponent(message)}`;
+  window.open(telegramUrl, '_blank');
+};
+
+
+
   // Computed values
   const repairCost = getTotalRepairCost(game);
   const showRepairButton = needsRepair(game);
@@ -152,6 +161,7 @@ const App = () => {
           raid={game.raid}
           gameOver={game.gameOver}
           onShare={handleShare}
+          onTelegramShare={shareToTelegram} // ← ДОБАВЬ ЭТУ СТРОКУ
         />
 
         {/* Floating Controls */}
@@ -182,6 +192,7 @@ const App = () => {
         isGameOver={game.gameOver}
         wave={game.raid.wave}
         onRestart={handleConfirmReset}
+        onTelegramShare={shareToTelegram}
       />
 
       {/* Reset Dialog */}
