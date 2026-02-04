@@ -33,12 +33,12 @@ export const GameGrid: FC<GameGridProps> = ({
       <div 
         className="relative select-none"
         style={{
-          width: 'min(92vw, 360px)',
-          height: 'min(70vh, 580px)',
+          width: 'min(95vw, 380px)',
+          height: 'min(60vh, 520px)',
           display: 'grid',
           gridTemplateColumns: `repeat(${GRID_COLS}, 1fr)`,
           gridTemplateRows: `repeat(${GRID_ROWS}, 1fr)`,
-          gap: '8px',
+          gap: '10px',
           aspectRatio: `${GRID_COLS} / ${GRID_ROWS}`
         }}
       >
